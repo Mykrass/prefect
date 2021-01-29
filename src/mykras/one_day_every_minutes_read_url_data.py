@@ -1,3 +1,5 @@
+# Prefect one_day_every_minutes+read_url_data
+
 import requests
 import json
 from collections import namedtuple
@@ -16,10 +18,11 @@ create_table = SQLiteScript(
 )
 
 ## extract
-@task
+@task(cache_for=datetime.timedelta(days=1))
 def get_complain_data():
     r = requests.get('https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/', params={'size': 10})
     response_json = json.loads(r.text)
+    print('I actually requested this time!')
     return response_json['hits']['hits']
 
 ## transform
@@ -54,7 +57,7 @@ def store_complaints(parsed):
 schedule = IntervalSchedule(interval=datetime.timedelta(minutes=1))
 
 
-with Flow('my etl flow') as f:
+with Flow('my etl flow', schedule=schedule) as f:
     db_table = create_table()
     raw = get_complain_data()
     parsed = parse_complaint_data(raw)
