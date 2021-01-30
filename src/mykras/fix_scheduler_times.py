@@ -10,6 +10,8 @@ from datetime import datetime, timedelta
 from prefect import Flow, task
 from prefect.schedules import IntervalSchedule
 
+from prefect import Client
+
 
 @task
 def extract():
@@ -36,5 +38,10 @@ with Flow("ETL",  schedule=schedule) as flow:
     t = transform(e)
     l = load(t)
 
-flow.run()
+state = flow.run()
+
+client = Client()
+client.create_project(project_name='mykras_hello_client')
+
+flow.register(project_name='mykras_hello_client')
 # %paste

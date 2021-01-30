@@ -11,6 +11,9 @@ from prefect import task, Flow
 from prefect.tasks.database.sqlite import SQLiteScript
 from prefect.schedules import IntervalSchedule
 
+from prefect import Client
+
+
 ## setup
 create_table = SQLiteScript(
     db='cfpbcomplaints.db',
@@ -64,4 +67,8 @@ with Flow('my etl flow', schedule=schedule) as f:
     populated_table = store_complaints(parsed)
     populated_table.set_upstream(db_table)
 
-f.run()
+state = f.run()
+
+client = Client()
+client.create_project(project_name='url_read_data')
+f.register(project_name='url_read_data')
