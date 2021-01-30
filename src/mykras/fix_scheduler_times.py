@@ -38,10 +38,9 @@ with Flow("ETL",  schedule=schedule) as flow:
     t = transform(e)
     l = load(t)
 
+    client = Client()
+    client.create_project(project_name='mykras_etl_client')
+
+flow.register(project_name='mykras_etl_client')
 state = flow.run()
-
-client = Client()
-client.create_project(project_name='mykras_hello_client')
-
-flow.register(project_name='mykras_hello_client')
 # %paste
