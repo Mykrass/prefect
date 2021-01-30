@@ -13,6 +13,6 @@ with Flow('My first flow!') as flow:
 state = flow.run()
 
 client = Client()
-client.create_project(project_name='mykras_hello')
+client.create_project(project_name='hello_worlds')
 
-flow.register(project_name='mykras_hello')
+flow.register(project_name='hello_worlds')
