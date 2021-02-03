@@ -9,6 +9,7 @@ from prefect import task, Flow
 from prefect.tasks.database.sqlite import SQLiteScript
 from prefect.schedules import IntervalSchedule
 from datetime import datetime, timedelta
+from prefect import Client
 
 def alert_failed(obj, old_state, new_state):
   if new_state.is_failed():
@@ -71,5 +72,9 @@ with Flow('my etl flow', schedule=schedule) as f:
     parsed = parse_complaint_data(raw)
     populated_table = store_complaints(parsed)
     populated_table.set_upstream(db_table)
+
+client = Client()
+client.create_project(project_name='Getting_started_with_Prefect')
+f.register(project_name='Getting_started_with_Prefect')
 
 f.run()
