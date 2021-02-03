@@ -12,6 +12,7 @@ from prefect.schedules import IntervalSchedule
 from prefect.engine import signals
 from prefect.engine.result_handlers import LocalResultHandler
 
+
 def alert_failed(obj, old_state, new_state):
   if new_state.is_failed():
     print('Failed!')
