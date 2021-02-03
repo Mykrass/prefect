@@ -66,7 +66,7 @@ schedule = IntervalSchedule(
 )
 
 
-with Flow('my etl flow', schedule=schedule) as f:
+with Flow('Getting_started_with_Prefect', schedule=schedule) as f:
     db_table = create_table()
     raw = get_complain_data()
     parsed = parse_complaint_data(raw)
