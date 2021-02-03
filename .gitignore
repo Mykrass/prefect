@@ -153,3 +153,6 @@ credentials.csv
 *.pub
 *.rdp
 *_rsa
+
+# data base
+*.db
