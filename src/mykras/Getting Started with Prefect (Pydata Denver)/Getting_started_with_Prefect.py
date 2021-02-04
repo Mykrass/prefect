@@ -5,6 +5,7 @@ from contextlib import closing
 import sqlite3
 import datetime
 
+
 from prefect import task, Flow
 from prefect.tasks.database.sqlite import SQLiteScript
 from prefect.schedules import IntervalSchedule
@@ -62,7 +63,7 @@ def store_complaints(parsed):
 schedule = IntervalSchedule(
     start_date=datetime.utcnow(),
     interval=timedelta(minutes=1),
-    end_date=datetime.utcnow() + timedelta(minutes=10),
+    end_date=datetime.utcnow() + timedelta(minutes=3),
 )
 
 
