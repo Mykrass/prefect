@@ -24,7 +24,8 @@ create_table = SQLiteScript(
 )
 
 ## extract
-@task(cache_for = timedelta(days=1))
+#@task(cache_for = timedelta(days=1))
+@task(cache_for = timedelta(days=1), max_retries=3, retry_delay=timedelta(minutes=1))
 def get_complain_data():
     r = requests.get('https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/', params={'size': 10})
     response_json = json.loads(r.text)
@@ -49,7 +50,8 @@ def parse_complaint_data(raw):
         return complaints
 
 ## load
-@task
+#@task
+@task(max_retries=3, retry_delay=timedelta(minutes=1))
 def store_complaints(parsed):
     #create_script = 'CREATE_TABLE_IF_NOT_EXISTS complaint (timestamp TEXT, state TEXT, product TEXT, company TEXT, complaint_what_happened TEXT)'
     insert_cmd = 'INSERT INTO complaint VALUES (?, ?, ?, ?, ?)'
@@ -68,7 +70,7 @@ schedule = IntervalSchedule(
 )
 
 
-with Flow('Getting_started_with_Prefect', schedule=schedule) as f:
+with Flow('Prefect-step-by-step', schedule=schedule) as f:
     db_table = create_table()
     raw = get_complain_data()
     parsed = parse_complaint_data(raw)
@@ -76,7 +78,8 @@ with Flow('Getting_started_with_Prefect', schedule=schedule) as f:
     populated_table.set_upstream(db_table)
 
 client = Client()
-client.create_project(project_name='Getting_started_with_Prefect')
-f.register(project_name='Getting_started_with_Prefect')
+client.create_project(project_name='Prefect-step-by-step')
+f.register(project_name='Prefect-step-by-step')
 
-f.run(token="wN26mg3gfP0DYoHcwEB7og")
+f.run()
+#f.run(token="wN26mg3gfP0DYoHcwEB7og")
