@@ -13,6 +13,11 @@ from prefect.schedules import IntervalSchedule
 from datetime import datetime, timedelta
 from prefect import Client
 
+#Health Checks
+#from prefect.agent.docker import DockerAgent
+#DockerAgent(agent_address="http://localhost:8080").start()
+
+
 def alert_failed(obj, old_state, new_state):
   if new_state.is_failed():
     print('Failed!')
@@ -81,5 +86,5 @@ client = Client()
 client.create_project(project_name='Prefect-step-by-step')
 f.register(project_name='Prefect-step-by-step')
 
-f.run()
 #f.run(token="wN26mg3gfP0DYoHcwEB7og")
+f.run()
