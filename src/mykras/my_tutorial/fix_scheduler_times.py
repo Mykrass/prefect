@@ -30,17 +30,17 @@ def load(y):
 schedule = IntervalSchedule(
     start_date=datetime.utcnow(),
     interval=timedelta(minutes=1),
-    end_date=datetime.utcnow() + timedelta(minutes=10),
+    end_date=datetime.utcnow() + timedelta(minutes=3),
 )
 
-with Flow("ETL",  schedule=schedule) as flow:
+with Flow("fix_scheduler_times",  schedule=schedule) as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
     client = Client()
-    client.create_project(project_name='mykras_etl_client')
+    client.create_project(project_name='fix_scheduler_times.py')
 
-flow.register(project_name='mykras_etl_client')
+flow.register(project_name='fix_scheduler_times.py')
 state = flow.run()
 # %paste

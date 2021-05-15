@@ -83,8 +83,8 @@ with Flow('Prefect-step-by-step', schedule=schedule) as f:
     populated_table.set_upstream(db_table)
 
 client = Client()
-client.create_project(project_name='Prefect-step-by-step')
-f.register(project_name='Prefect-step-by-step')
+client.create_project(project_name='Prefect-step-by-step.py')
+f.register(project_name='Prefect-step-by-step.py')
 
 #f.run(token="wN26mg3gfP0DYoHcwEB7og")
 f.run()

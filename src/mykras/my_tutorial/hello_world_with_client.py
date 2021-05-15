@@ -7,12 +7,13 @@ def say_hello():
 
 from prefect import Flow
 
-with Flow('My first flow!') as flow:
+with Flow('hello_worlds_with_client') as flow:
     say_hello()
 
 state = flow.run()
 
 client = Client()
-client.create_project(project_name='hello_worlds')
+client.create_project(project_name='hello_worlds_with_client.py')
 
-flow.register(project_name='hello_worlds')
+flow.register(project_name='hello_worlds_with_client.py')
+flow.run()
